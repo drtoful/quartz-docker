@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# check if docker image is available
+imgtst=$(/usr/bin/docker image inspect quartz | wc)
+if [ $? -ne 0 ]; then
+  echo "$0: unable to find quartz docker image" 2>&1
+  exit -1
+fi
+
+# check for quartz config
+cfgfile=""
+if [ -f ./.quartz/quartz.config.ts ]; then
+  cfgfile="-v./.quartz/quartz.config.ts:/usr/src/app/quartz.config.ts"
+fi
+
+# check for quartz layout
+lytfile=""
+if [ -f ./.quartz/quartz.layout.ts ]; then
+  lytfile="-v./.quartz/quartz.layout.ts:/usr/src/app/quartz.layout.ts"
+fi
+
+mkdir -p output
+
+/usr/bin/docker run --rm -v./output:/usr/src/app/public -v.:/usr/src/app/content $cfgfile $lytfile -itp 8080:8080 quartz $@
