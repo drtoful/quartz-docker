@@ -10,7 +10,7 @@ A small wrapper to build and run [quartz](https://quartz.jzhao.xyz/) completely 
 
 You can now use _quartz_ as if you had install it locally, by using `quartzcmd`. You can build and serve your content simply by issuing
 
-   quartzcmd build --serve
+    quartzcmd build --serve
 
 It will use the current directory as the content. This will run the webserver locally with port 8080.
 
@@ -20,7 +20,7 @@ If you want to use your own config and layout files, copy them into a folder `.q
 
 It is advisable to add the following to the `quart.config.ts`
 
-  ignorePatterns: [".git", ".quartz", ".obsidian", "output"],
+    ignorePatterns: [".git", ".quartz", ".obsidian", "output"],
 
 ## Output
 
