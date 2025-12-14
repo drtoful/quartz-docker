@@ -19,6 +19,20 @@ if [ -f ./.quartz/quartz.layout.ts ]; then
   lytfile="-v./.quartz/quartz.layout.ts:/usr/src/app/quartz.layout.ts"
 fi
 
-mkdir -p output
+# check for quartz css
+cssfile=""
+if [ -f ./.quartz/custom.scss ]; then
+   cssfile="-v./.quartz/custom.scss:/usr/src/app/quartz/styles/custom.scss"
+fi
 
-/usr/bin/docker run --rm -v./output:/usr/src/app/public -v.:/usr/src/app/content $cfgfile $lytfile -itp 8080:8080 quartz $@
+if [ -d output/ ]; then
+    rm -rf output/*
+else
+    mkdir -p output
+fi
+
+/usr/bin/docker run --name quartzcmd -v.:/usr/src/app/content $cfgfile $lytfile $cssfile -itp 8080:8080 quartz $@
+
+# copy build output
+/usr/bin/docker cp quartzcmd:/usr/src/app/public/. output
+/usr/bin/docker rm quartzcmd >/dev/null
